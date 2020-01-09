@@ -1,30 +1,7 @@
 package com.casestudy.shopping;
 
-import com.casestudy.shopping.model.Campaign;
-import com.casestudy.shopping.model.Coupon;
-import com.casestudy.shopping.model.Product;
+import com.casestudy.shopping.service.*;
 
-public interface ShoppingChart {
+public interface ShoppingChart extends ShoppingChartUpdateService, ShoppingChartDiscountService, ShoppingChartDeliveryService, ShoppingChartPrinterService, ShoppingChartReaderService {
 
-    void addItem(Product p, int amount);
-
-    void removeItem(Product p, int amount);
-
-    void applyDiscounts(Campaign... campaigns);
-
-    void applyCoupon(Coupon coupon);
-
-    double getTotalAmountAfterDiscounts();
-
-    double getCouponDiscounts();
-
-    double getCampaignDiscount();
-
-    int getNumberOfProducts();
-
-    int getNumberOfDistinctCategories();
-
-    double getDeliveryCost();
-
-    String print();
 }

@@ -1,5 +1,5 @@
 package com.casestudy.shopping;
 
 public interface DeliveryCostCalculator {
-    double calculateFor(ShoppingChartImpl chart);
+    double calculateFor(ShoppingChart chart);
 }
