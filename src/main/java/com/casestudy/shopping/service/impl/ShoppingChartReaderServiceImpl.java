@@ -2,9 +2,7 @@ package com.casestudy.shopping.service.impl;
 
 import com.casestudy.shopping.model.Category;
 import com.casestudy.shopping.model.Product;
-import com.casestudy.shopping.service.ShoppingChartDiscountService;
 import com.casestudy.shopping.service.ShoppingChartReaderService;
-import com.casestudy.shopping.service.ShoppingChartUpdateService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
@@ -13,9 +11,6 @@ import java.util.Map;
 public class ShoppingChartReaderServiceImpl implements ShoppingChartReaderService {
 
     private final Map<Category, Map<Product, Integer>> chart;
-
-    private final ShoppingChartUpdateService updater;
-    private final ShoppingChartDiscountService discount;
 
     @Override
     public int getNumberOfProducts() {
@@ -27,13 +22,4 @@ public class ShoppingChartReaderServiceImpl implements ShoppingChartReaderServic
         return chart.size();
     }
 
-    @Override
-    public double getTotalAmountAfterDiscounts() {
-        return updater.getTotalPrice() - discount.getCampaignDiscount() - discount.getCouponDiscounts();
-    }
-
-    @Override
-    public double getTotalPrice() {
-        return updater.getTotalPrice();
-    }
 }

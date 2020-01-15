@@ -1,8 +1,8 @@
 package com.casestudy.shopping.service.impl;
 
+import com.casestudy.shopping.ShoppingChart;
 import com.casestudy.shopping.model.*;
 import com.casestudy.shopping.service.ShoppingChartDiscountService;
-import com.casestudy.shopping.service.ShoppingChartUpdateService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -13,18 +13,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ShoppingChartDiscountServiceImpl implements ShoppingChartDiscountService {
 
-    private final Map<Category, Map<Product, Integer>> chart;
+    private final ShoppingChart shoppingChart;
 
-    private final ShoppingChartUpdateService updater;
+    private final Map<Category, Map<Product, Integer>> chart;
 
     private List<Double> couponDiscounts = new ArrayList<>();
     private double campaignDiscount;
-
-    @Override
-    public void initializeDiscounts() {
-        couponDiscounts = new ArrayList<>();
-        campaignDiscount = 0;
-    }
 
     @Override
     public void applyDiscounts(Campaign... campaigns) {
@@ -99,7 +93,7 @@ public class ShoppingChartDiscountServiceImpl implements ShoppingChartDiscountSe
             return;
         }
 
-        double priceAfterDiscounts = updater.getTotalPrice() - getCampaignDiscount() - getCouponDiscounts();
+        double priceAfterDiscounts = getTotalAmountAfterDiscounts();
 
         if (priceAfterDiscounts < coupon.getAmountLimit()) {
             return;
@@ -118,17 +112,19 @@ public class ShoppingChartDiscountServiceImpl implements ShoppingChartDiscountSe
     @Override
     public double getCouponDiscounts() {
         return couponDiscounts.stream().mapToDouble(Double::doubleValue).sum();
-
     }
 
     private void setCampaignDiscount(double campaignDiscount) {
         this.campaignDiscount = campaignDiscount;
     }
 
-
     @Override
     public double getCampaignDiscount() {
         return campaignDiscount;
+    }
 
+    @Override
+    public double getTotalAmountAfterDiscounts() {
+        return shoppingChart.getTotalPrice()-getCampaignDiscount() - getCouponDiscounts();
     }
 }

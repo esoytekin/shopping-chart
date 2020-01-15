@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ShoppingChartDeliveryServiceImpl implements ShoppingChartDeliveryService {
 
-    private final DeliveryCostCalculator deliveryCostCalculator;
     private final ShoppingChart shoppingChart;
+
+    private final DeliveryCostCalculator deliveryCostCalculator;
 
     @Override
     public double getDeliveryCost() {

@@ -6,7 +6,4 @@ public interface ShoppingChartReaderService {
 
     int getNumberOfDistinctCategories();
 
-    double getTotalPrice();
-
-    double getTotalAmountAfterDiscounts();
 }

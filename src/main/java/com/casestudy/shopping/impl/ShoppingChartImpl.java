@@ -17,38 +17,29 @@ public class ShoppingChartImpl implements ShoppingChart {
     private final ShoppingChartUpdateService updater;
     private final ShoppingChartReaderService reader;
     private final ShoppingChartDiscountService discount;
-    private final ShoppingChartDeliveryService delivery;
     private final ShoppingChartPrinterService printer;
-
-
+    private final ShoppingChartDeliveryService delivery;
 
     public ShoppingChartImpl(DeliveryCostCalculator deliveryCostCalculator) {
 
         Map<Category, Map<Product, Integer>> chart = new HashMap<>();
 
         this.updater =  new ShoppingChartUpdateServiceImpl(chart);
-        this.discount = new ShoppingChartDiscountServiceImpl(chart, updater);
-        this.reader  = new ShoppingChartReaderServiceImpl(chart, updater, discount);
-        this.delivery = new ShoppingChartDeliveryServiceImpl(deliveryCostCalculator, this);
-        this.printer = new ShoppingChartPrinterServiceImpl(chart, delivery, reader);
+        this.reader  = new ShoppingChartReaderServiceImpl(chart);
+        this.discount = new ShoppingChartDiscountServiceImpl(this,chart);
+        this.printer = new ShoppingChartPrinterServiceImpl(this, chart);
+        this.delivery = new ShoppingChartDeliveryServiceImpl(this, deliveryCostCalculator);
 
     }
 
     @Override
     public void addItem(Product p, int amount) {
         updater.addItem(p,amount);
-        discount.initializeDiscounts();
     }
 
     @Override
     public void removeItem(Product p, int amount) {
         updater.removeItem(p,amount);
-        discount.initializeDiscounts();
-    }
-
-    @Override
-    public void initializeDiscounts() {
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -67,18 +58,13 @@ public class ShoppingChartImpl implements ShoppingChart {
     }
 
     @Override
+    public double getCampaignDiscount() {
+        return discount.getCampaignDiscount();
+    }
+
+    @Override
     public double getTotalAmountAfterDiscounts() {
-        return reader.getTotalAmountAfterDiscounts();
-    }
-
-    @Override
-    public double getDeliveryCost() {
-        return delivery.getDeliveryCost();
-    }
-
-    @Override
-    public String print() {
-        return printer.print();
+        return discount.getTotalAmountAfterDiscounts();
     }
 
     @Override
@@ -92,12 +78,18 @@ public class ShoppingChartImpl implements ShoppingChart {
     }
 
     @Override
-    public double getTotalPrice() {
-        return reader.getTotalPrice();
+    public double getDeliveryCost() {
+        return delivery.getDeliveryCost();
     }
 
     @Override
-    public double getCampaignDiscount() {
-        return discount.getCampaignDiscount();
+    public String print() {
+        return printer.print();
     }
+
+    @Override
+    public double getTotalPrice() {
+        return updater.getTotalPrice();
+    }
+
 }

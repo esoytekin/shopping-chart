@@ -5,8 +5,6 @@ import com.casestudy.shopping.model.Coupon;
 
 public interface ShoppingChartDiscountService {
 
-    void initializeDiscounts();
-
     void applyDiscounts(Campaign... campaigns);
 
     void applyCoupon(Coupon coupon);
@@ -14,4 +12,7 @@ public interface ShoppingChartDiscountService {
     double getCouponDiscounts();
 
     double getCampaignDiscount();
+
+    double getTotalAmountAfterDiscounts();
+
 }
